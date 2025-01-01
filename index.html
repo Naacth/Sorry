@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Sorry</title>
+    <link rel="icon" type="image/png" href="img/4.jpg">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(to bottom, #ffe6e6, #ffcccc);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .heart {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            position: absolute;
+            transform: rotate(45deg);
+            animation: float 5s infinite ease-in-out;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: '';
+            width: 50px;
+            height: 50px;
+            background-color: red;
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        .heart::before {
+            top: -25px;
+            left: 0;
+        }
+
+        .heart::after {
+            left: -25px;
+            top: 0;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(45deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(45deg);
+                opacity: 0;
+            }
+        }
+
+        button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #cc0000;
+            transform: scale(1.1);
+        }
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            width: 90%;
+            max-width: 300px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin: 15px 0;
+            color: #cc0000;
+        }
+
+        .card p {
+            font-size: 16px;
+            padding: 0 15px 20px;
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            button {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+
+            .card h3 {
+                font-size: 20px;
+            }
+
+            .card p {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-container {
+                gap: 10px;
+            }
+
+            .card {
+                width: 95%;
+            }
+        }
+
+        /* Popup Styles */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .popup h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #cc0000;
+        }
+
+        .popup p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .popup button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .popup button:hover {
+            background-color: #cc0000;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        /* Initial Popup for Music */
+        .music-popup {
+            display: block;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 400px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .music-popup button {
+            background-color: #4CAF50;
+        }
+
+        .music-popup button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <audio id="audio" loop>
+        <source src="sound/kai.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Music Popup -->
+    <div class="music-popup" id="music-popup">
+        <h2>Hey, let's listen to some music!</h2>
+        <p>Press the button below to start the music.</p>
+        <button onclick="startMusic()">Musikkkk</button>
+    </div>
+
+    <div class="heart-bg">
+        <div class="container">
+            <h1>Maaf ya, Sayang ❤️</h1>
+            <p>
+                Aku tahu aku salah, dan aku sangat menyesal telah membuatmu marah.
+                Aku harap kamu bisa memaafkan aku. Kamu adalah orang yang paling penting bagiku. 😔
+            </p>
+            <p>
+                Aku janji akan berusaha jadi yang lebih baik untuk kita. Please jangan marah lagi ya...
+            </p>
+            <button onclick="sendHug()">Kirim Pelukan Virtual 🤗</button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <h2>Tunggu Aku Yah!</h2>
+        <p>Jangan kemana-mana yah sayang aku datang lagi ditanggal 10 ❤️</p>
+        <button onclick="closePopup()">Oke, Aku Tunggu 😊</button>
+    </div>
+
+    <script>
+        function startMusic() {
+            document.getElementById('audio').play();
+            document.getElementById('music-popup').style.display = 'none'; // Close the music popup
+        }
+
+        function sendHug() {
+            alert('Pelukan virtual sudah terkirim! ❤️');
+            document.getElementById('overlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('overlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+
+        function createHearts() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            document.body.appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+
+        setInterval(createHearts, 500);
+    </script>
+
+    <div class="cards-container">
+        <div class="card">
+            <img src="img/2.jpg" alt="Pacar 1">
+            <h3>Kamu Selalu Di Hati</h3>
+            <p>Maafkan aku karena telah mengecewakanmu. Aku akan berusaha menjadi yang terbaik untuk kita.</p>
+        </div>
+        <div class="card">
+            <img src="img/1.jpg" alt="Pacar 2">
+            <h3>Senyummu Berarti</h3>
+            <p>Aku tidak ingin kehilangan senyummu. Tolong berikan aku kesempatan untuk memperbaiki semuanya.</p>
+        </div>
+        <div class="card">
+            <img src="img/3.jpg" alt="Pacar 3">
+            <h3>Cinta Yang Tulus</h3>
+            <p>Terima kasih telah menjadi bagian hidupku. Aku mohon, jangan biarkan kesalahan ini merusak cinta kita.</p>
+        </div>
+    </div>
+</body>
+</html>
